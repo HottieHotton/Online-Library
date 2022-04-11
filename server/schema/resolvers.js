@@ -30,18 +30,16 @@ let resolvers = {
         },
         //Checks to see if the entered information matches
         login: async (parent, { email, password }) => {
-            const user = await User.findOne({ email });
-            if(!user) {
-                throw new AuthenticationError('Wrong username!');
+            const user = await User.findOne( { email });
+            if (!user) {
+                throw new AuthenticationError('Incorrect credentials')
             }
-
-            const correctPass = await user.isCorrectPassword(password);
-            if(!correctPass){
-                throw new AuthenticationError('Wrong password!');
+            const correctPw = await user.isCorrectPassword(password);
+            if(!correctPw) {
+                throw new AuthenticationError('Incorrect credentials')
             }
-
-            const pass = signToken(user);
-            return { pass, user};
+            const token = signToken(user);
+            return { token, user };
         },
         //Save book to user
         saveBook: async (parent, { bookData }, context) =>{

@@ -14,10 +14,10 @@ import {
 import { setContext } from "@apollo/client/link/context";
 
 //GraphQL calls
-const qlLink = createHttpLink({
+const httpLink = createHttpLink({
   uri: "/graphql",
 });
-const tokenLink = setContext((_, { headers }) => {
+const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem("id_token");
   return {
     headers: {
@@ -27,7 +27,7 @@ const tokenLink = setContext((_, { headers }) => {
   };
 });
 const client = new ApolloClient({
-  link: tokenLink.concat(qlLink),
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
 
